@@ -36,20 +36,29 @@ function createMarkupMax(data) {
 function handlerInput(event) {
     const inputValue = event.target.value;
 
+    clearMarkup(inputValue)
+
     fetchCountries(inputValue)
-    .then(data => {
+        .then(data => {
         if (data.length > 10) {
             Notiflix.Notify.info('Too many matches found. Please enter a more specific name.')
         } else if (data.length < 2) {
             const markupMax = createMarkupMax(data);
             listEl.innerHTML = markupMax 
+            
         } else if (data.length > 2 || data.length < 10) {
+            // clearInput()
             const markupMini = createMarkupMini(data);
             listEl.innerHTML = markupMini
-        }
+        } 
     })
-    .catch(() => Notiflix.Notify.failure('Oops, there is no country with that name'))
-    // .finally(() => formEl.reset())
+        .catch(() => Notiflix.Notify.failure('Oops, there is no country with that name'))
+}
+
+function clearMarkup(elementValue) {
+    if (elementValue === '') {
+      listEl.innerHTML = ''
+    }
 }
 
 formEl.addEventListener('input', debounce(handlerInput, DEBOUNCE_DELAY))
