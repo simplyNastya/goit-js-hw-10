@@ -47,18 +47,21 @@ function handlerInput(event) {
             listEl.innerHTML = markupMax 
             
         } else if (data.length > 2 || data.length < 10) {
-            // clearInput()
             const markupMini = createMarkupMini(data);
             listEl.innerHTML = markupMini
         } 
     })
-        .catch(() => Notiflix.Notify.failure('Oops, there is no country with that name'))
+        .catch(() => {
+            clearMarkup(inputValue)
+            Notiflix.Notify.failure('Oops, there is no country with that name')
+        })
 }
 
 function clearMarkup(elementValue) {
     if (elementValue === '') {
       listEl.innerHTML = ''
-    }
+    } 
+    listEl.innerHTML = ''
 }
 
 formEl.addEventListener('input', debounce(handlerInput, DEBOUNCE_DELAY))
